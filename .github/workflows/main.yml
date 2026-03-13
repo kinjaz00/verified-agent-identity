@@ -7,10 +7,6 @@ jobs:
   verify:
     runs-on: ubuntu-latest
 
-    # Menambahkan environment variable agar runner dipaksa pakai Node 24 (opsional tapi disarankan)
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -18,9 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Mengubah ke versi 22 (LTS terbaru) atau 24 agar selaras dengan runner
-          node-version: "24" 
-          cache: 'npm' # Menambahkan cache agar install lebih cepat di kemudian hari
+          node-version: "20" # Kita tetap di 20 dulu supaya aman buat script Anda
 
       - name: Install ClawHub
         run: npm install -g clawhub
@@ -29,13 +23,13 @@ jobs:
         run: clawhub install verified-agent-identity
 
       - name: Install dependencies
-        # Menggunakan 'working-directory' lebih rapi daripada 'cd scripts'
-        run: npm install
-        working-directory: ./scripts
+        run: |
+          cd scripts
+          npm install
 
       - name: Create Ethereum Identity
         run: node scripts/createNewEthereumIdentity.js
 
       - name: Link Human to Agent
         run: |
-          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"kinjaz00","description":"kinjaz00 AI Agent"}'
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"kinjaz00","description":"kinjaz00 AI Agent"}' 
