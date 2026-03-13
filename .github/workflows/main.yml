@@ -1,35 +1,59 @@
 name: Verify Human Identity
-
 on:
   workflow_dispatch:
-
+    inputs:
+      agent_name:
+        description: 'kinjaz00'
+        required: true
+        default: 'kinjaz00'
+      agent_description:
+        description: 'kinjaz00'
+        required: true
+        'kinjaz00 AI Agent'
 jobs:
   verify:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: "20" # Kita tetap di 20 dulu supaya aman buat script Anda
-
-      - name: Install ClawHub
-        run: npm install -g clawhub
-
-      - name: Install Verified Agent Identity
-        run: clawhub install verified-agent-identity
-
-      - name: Install dependencies
+          node-version: '20'
+      - name: Step 1 - Install ClawHub skill
+        run: npx clawhub@latest install verified-agent-identity
+      - name: Install script dependencies
         run: |
           cd scripts
           npm install
-
-      - name: Create Ethereum Identity
+      - name: Step 2 - Create new Ethereum Identity
         run: node scripts/createNewEthereumIdentity.js
-
-      - name: Link Human to Agent
+      - name: Step 3 - Link Human to Agent
         run: |
-          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"kinjaz00","description":"kinjaz00 AI Agent"}' 
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name": "kinjaz00", "description": "kinjaz00 AI Agent"}' 
+
+1. Klik pada workflow run yang sudah ✅ hijau tadi
+2. Klik job "verify"
+3. Cari "Step 3 - Link Human to Agent"
+4. Klik tanda ▶️ panah untuk expand
+5. Di dalam log akan muncul sebuah link URL
+6. Klik link tersebut
+
+---
+
+## STEP 6 - Bind Agent ke Billions
+
+1. Link tadi akan membuka website Billions
+2. Login akun Billions kamu
+3. Klik "Bind Agent" atau "Add Agent"
+4. Konfirmasi → selesai ✅
+
+---
+
+## STEP 7 - Cek di Profile
+
+1. Buka profile Billions kamu
+2. Cek bagian "Agent" → pastikan namagithubkamu sudah muncul ✅
+
+---
+NOTE: KALAU UDH VERIFY HIJAU DAN GAGAL DI APP BILL/WEB BILL ULANGI LAGI PROSES STEP 5 - 7, KALAU MASIH GAGAL HAPUS REPO ULANGI DARI STEP 1, KALAU MASIH GAGAL APP DOWN, MENDING TURU BESOK LAGI AJA
