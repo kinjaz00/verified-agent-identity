@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           # Mengubah ke versi 22 (LTS terbaru) atau 24 agar selaras dengan runner
-          node-version: "22" 
+          node-version: "24" 
           cache: 'npm' # Menambahkan cache agar install lebih cepat di kemudian hari
 
       - name: Install ClawHub
